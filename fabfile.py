@@ -3,7 +3,7 @@
 
 from fabric.api import *
 
-APT_PACKAGES = "apache2 fail2ban mysql-server lamp-server^ php php-mysql php-apcu php-gd postfix libapache2-mod-php expect"
+APT_PACKAGES = "apache2 fail2ban mysql-server lamp-server^ php php-mysql php-curl php-apcu php-gd postfix libapache2-mod-php expect"
 
 env.user = "root"
 
@@ -35,6 +35,10 @@ def install_files():
     """
     Install files onto remote machine.
     """
+    # Clone Directus Suite
+    run("git clone https://github.com/directus/directus.git /var/www/directus")
+    # Enable mod_rewrite
+    run("a2enmod rewrite")
     # Set File Permissions
     run("chown -R www-data: /var/log/apache2")
     run("chown -R www-data: /etc/apache2")
@@ -43,11 +47,6 @@ def install_files():
     put("files/etc/apache2/sites-available/000-default.conf","/etc/apache2/sites-available/000-default.conf")
     put("files/etc/update-motd.d/99-one-click","/etc/update-motd.d/99-one-click")
     put("files/var/lib/cloud/scripts/per-once/001_onboot","/var/lib/cloud/scripts/per-once/001_onboot")
-    
-    run("git clone https://github.com/directus/directus.git /var/www/directus")
-
-    
-
 
 @task
 def build_base():
