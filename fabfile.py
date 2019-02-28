@@ -43,7 +43,8 @@ def install_files():
     put("files/etc/apache2/sites-available/000-default.conf","/etc/apache2/sites-available/000-default.conf")
     put("files/etc/update-motd.d/99-one-click","/etc/update-motd.d/99-one-click")
     put("files/var/lib/cloud/scripts/per-once/001_onboot","/var/lib/cloud/scripts/per-once/001_onboot")
-    put("files/var/www/html/index.html","/var/www/html/index.html")
+    
+    run("git clone https://github.com/directus/directus.git /var/www/directus")
 
     
 
