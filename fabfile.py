@@ -46,7 +46,9 @@ def install_files():
     # Upload files to build system's filesystem
     put("files/etc/apache2/sites-available/000-default.conf","/etc/apache2/sites-available/000-default.conf")
     put("files/etc/update-motd.d/99-one-click","/etc/update-motd.d/99-one-click")
-    put("files/var/lib/cloud/scripts/per-once/001_onboot","/var/lib/cloud/scripts/per-once/001_onboot")
+    run("chmod +x /etc/update-motd.d/99-one-click")
+    put("files/var/lib/cloud/scripts/per-instance/001_onboot.sh","/var/lib/cloud/scripts/per-instance/001_onboot.sh")
+    run("chmod +x /var/lib/cloud/scripts/per-instance/001_onboot.sh")
 
 @task
 def build_base():
