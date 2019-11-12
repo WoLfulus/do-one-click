@@ -1,0 +1,51 @@
+{
+  "variables": {
+    "token": "{{env `DIGITALOCEAN_API_TOKEN`}}",
+    "image_name": "directus-snapshot-{{timestamp}}",
+    "version": ""
+  },
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{user `token`}}",
+      "image": "ubuntu-18-04-x64",
+      "region": "nyc3",
+      "size": "s-1vcpu-1gb",
+      "ssh_username": "root",
+      "snapshot_name": "{{user `image_name`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "rootfs/",
+      "destination": "/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "cloud-init status --wait",
+        "chmod +x /etc/update-motd.d/99-directus",
+        "chmod +x /var/lib/cloud/scripts/per-instance/01-database.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "environment_vars": ["DIRECTUS_VERSION={{user `version`}}"],
+      "scripts": [
+        "scripts/setup/00-packages.sh",
+        "scripts/setup/01-firewall.sh",
+        "scripts/setup/02-composer.sh",
+        "scripts/setup/03-apache.sh",
+        "scripts/setup/04-directus.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/cleanup/98-cleanup.sh",
+        "scripts/cleanup/99-check.sh"
+      ]
+    }
+  ]
+}

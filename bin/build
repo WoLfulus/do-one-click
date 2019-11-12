@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#
+# Options
+#
+set -e
+
+#
+# Global variables
+#
+root=$(cd $(dirname ${0})/../; pwd)
+
+#
+# "Includes"
+#
+source ${root}/bin/argsf
+
+set -a
+[ -f "${root}/.env" ] && source "${root}/.env"
+set +a
+
+#
+# Fetches the latest release
+#
+function fetch_latest_release() {
+  repository="${1}"
+  release=$(curl -fsSLI -o /dev/null -w "%{url_effective}\n" https://github.com/${repository}/releases/latest)
+  if [ "${release}" == "https://github.com/${repository}/releases" ]; then
+    >&2 echo "No releases found for repository \"${repository}\"."
+    return 1
+  fi
+  echo ${release##*/}
+}
+
+#
+# Main
+#
+function main() {
+  version=$(argument version "latest")
+  if [ "${version}" == "latest" ]; then
+    version=$(fetch_latest_release directus/directus)
+  fi
+  echo "Using version: ${version}"
+  packer validate "${root}/directus.json"
+  packer build \
+    -var "version=${version}" \
+    "${root}\/directus.json"
+}
+
+main

@@ -1,0 +1,64 @@
+#!/bin/sh
+
+myip=$(hostname -I | awk '{print$1}')
+
+cat <<EOF
+
+                            .cxxkkkxxdol:;'.
+                            .:KMMMMMMMMMMWNKko:.
+                            ,kNMMMMMMMMMWNNMMMWXOl'
+                 ,l,         .;ldxkkOkdo::OMMMMMMMNk:.
+                '0MNkl;'...              cNMMMMMMMMMW0c.
+                .oXWMMWNXK0Okxol:'...  .cKMMMMMMMMMMMNx.
+                  lNMMMMMMMMMMMMMWNX0OOKWMMMMMMNOool:'
+                 .OMMMMMMMMMMMMMMMMMMMMMMMMMMMWo
+                 lWMMMMMMMMMMMMMMMMMMMMMMMMMMMX;
+               .lXMMMMMMMWXKXWMMMMMMMMMMMMMMMMNd;'..
+            :x0XWMMMMMMNk:...,cdONWMMMMMMMMMMMMMWNX0ko;.
+           :NMMMNK0Oxoc'         ';:dOKNWWMMMMMMWNXXNWWKl.
+          ;KMW0c'..                   .',,;clll:,...'cOWWx.
+        .lXMXo.                                       .,:'
+       'ONKd'
+       .''.
+
+       Welcome to DigitalOcean's One-Click Directus Droplet!
+   Here are some helpful links to get you started with Directus
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+          Directus main website: https://directus.io
+         Directus documentation: https://docs.directus.io
+              Your installation: http://$myip
+                     Your admin: http://$myip/admin
+
+
+    Here are some information about your current installation
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    - Directus is installed at /var/directus/
+    - Your credentials are stored in ~/credentials.txt
+    - UFW firewall is enabled, all ports are BLOCKED except
+      22 (SSH), 80 (HTTP), 443 (HTTPS)
+    - If you're unable to access the admin panel, please check
+      your firewall droplet rules inside DigitalOcean's panel
+
+EOF
+
+if [ -f /var/directus/credentials.txt ]; then
+
+cat <<EOF
+        Just for quick access, these are your credentials
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+EOF
+cat /var/directus/credentials.txt
+cat <<EOF
+
+                      Admin URL: http://${myip}/admin
+
+                         [[ IMPORTANT ]]
+    To stop these credentials from showing each time you login
+      you need to remove /var/directus/credentials.txt file.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+EOF
+
+fi
