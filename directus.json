@@ -1,7 +1,6 @@
 {
   "variables": {
     "token": "{{env `DIGITALOCEAN_API_TOKEN`}}",
-    "image_name": "directus-snapshot-{{timestamp}}",
     "version": ""
   },
   "builders": [
@@ -12,7 +11,7 @@
       "region": "nyc3",
       "size": "s-1vcpu-1gb",
       "ssh_username": "root",
-      "snapshot_name": "{{user `image_name`}}"
+      "snapshot_name": "directus-marketplace-{{user `version`}}-{{timestamp}}"
     }
   ],
   "provisioners": [

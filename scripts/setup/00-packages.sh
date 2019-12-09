@@ -19,6 +19,7 @@ apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confol
   git \
   curl \
   apache2-dev \
+  imagemagick \
   libcurl4-openssl-dev \
   libedit-dev \
   libsodium-dev \
@@ -29,7 +30,8 @@ apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confol
   libpng-dev \
   libjpeg-dev \
   libzip-dev \
-  libfreetype6-dev
+  libfreetype6-dev \
+  libmagickwand-dev
 apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' install \
   php-mbstring \
   php-curl \
@@ -37,4 +39,5 @@ apt -qqy -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confol
   php-exif \
   php-xml \
   php-gd \
-  php-sqlite3
+  php-sqlite3 \
+  php-imagick
